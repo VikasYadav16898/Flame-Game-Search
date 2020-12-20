@@ -6,6 +6,7 @@ import Game from "../components/Game";
 //Styling And Animations
 import styled from "styled-components";
 import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
+import { fadeIn } from "../animations";
 
 //Game Detail Component
 import GameDetail from "../components/GameDetail";
@@ -28,7 +29,7 @@ export default function Home() {
     (state) => state.games
   );
   return (
-    <GameList>
+    <GameList variants={fadeIn} initial="hidden" animate="show">
       <AnimateSharedLayout type="crossfade">
         <AnimatePresence>
           {pathId && <GameDetail pathId={pathId} />}

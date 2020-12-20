@@ -2,6 +2,8 @@ import React, { useState } from "react";
 //Styling And Animations
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import { fadeIn } from "../animations";
+//LOGO
 import logo from "../img/logo.svg";
 
 //Redux And Routes
@@ -24,7 +26,7 @@ export default function Nav() {
     dispatch({ type: "CLEAR_SEARCHED" });
   };
   return (
-    <StyledNav>
+    <StyledNav variants={fadeIn} initial="hidden" animate="show">
       <Logo onClick={clearSearched}>
         <img src={logo} alt="logo" />
         <h1>Flame</h1>
