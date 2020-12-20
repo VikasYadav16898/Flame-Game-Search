@@ -35,28 +35,20 @@ export default function GameDetail({ pathId }) {
     switch (platform) {
       case "PlayStation 4":
         return playstation;
-        break;
       case "PlayStation 5":
         return playstation;
-        break;
       case "Xbox One":
         return xbox;
-        break;
       case "PC":
         return steam;
-        break;
       case "Nintendo Switch":
         return nintendo;
-        break;
       case "iOS":
         return apple;
-        break;
       case "macOS":
         return apple;
-        break;
       default:
         return gamepad;
-        break;
     }
   };
 

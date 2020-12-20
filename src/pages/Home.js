@@ -6,7 +6,6 @@ import Game from "../components/Game";
 //Styling And Animations
 import styled from "styled-components";
 import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
-import { newGamesURL, popularGamesURL } from "../api";
 
 //Game Detail Component
 import GameDetail from "../components/GameDetail";
@@ -25,19 +24,40 @@ export default function Home() {
   }, [dispatch]);
 
   //Get Data Back
-  const { popular, newGames, upcoming } = useSelector((state) => state.games);
+  const { popular, newGames, upcoming, searched } = useSelector(
+    (state) => state.games
+  );
   return (
     <GameList>
       <AnimateSharedLayout type="crossfade">
         <AnimatePresence>
           {pathId && <GameDetail pathId={pathId} />}
         </AnimatePresence>
+        {searched.length ? (
+          <div className="searched">
+            <h2>Searched Games</h2>
+            <Games>
+              {searched.map((game) => (
+                <Game
+                  name={game.name}
+                  released={game.released}
+                  key={game.id}
+                  id={game.id}
+                  image={game.background_image}
+                />
+              ))}
+            </Games>
+          </div>
+        ) : (
+          ""
+        )}
         <h2>Upcoming Games</h2>
         <Games>
           {upcoming.map((game) => (
             <Game
               name={game.name}
               released={game.released}
+              key={game.id}
               id={game.id}
               image={game.background_image}
             />
@@ -50,6 +70,7 @@ export default function Home() {
               name={game.name}
               released={game.released}
               id={game.id}
+              key={game.id}
               image={game.background_image}
             />
           ))}
@@ -61,6 +82,7 @@ export default function Home() {
               name={game.name}
               released={game.released}
               id={game.id}
+              key={game.id}
               image={game.background_image}
             />
           ))}

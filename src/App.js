@@ -1,4 +1,3 @@
-import react from "react";
 //Styles
 import GlobalStyle from "./components/GlobalStyle";
 //Router
