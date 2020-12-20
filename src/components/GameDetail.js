@@ -8,7 +8,18 @@ import { useSelector } from "react-redux";
 //UseHistory
 import { useHistory } from "react-router-dom";
 
-export default function GameDetail() {
+//Small Images
+import { smallImage } from "../utils";
+import playstation from "../img/playstation.svg";
+import steam from "../img/steam.svg";
+import xbox from "../img/xbox.svg";
+import nintendo from "../img/nintendo.svg";
+import apple from "../img/apple.svg";
+import gamepad from "../img/gamepad.svg";
+import starEmpty from "../img/star-empty.png";
+import starFull from "../img/star-full.png";
+
+export default function GameDetail({ pathId }) {
   const history = useHistory();
   //Data
   const exitDetailHandler = (e) => {
@@ -18,37 +29,95 @@ export default function GameDetail() {
       history.push("/");
     }
   };
+
+  //Get Platoforms Iamges
+  const getPlatform = (platform) => {
+    switch (platform) {
+      case "PlayStation 4":
+        return playstation;
+        break;
+      case "PlayStation 5":
+        return playstation;
+        break;
+      case "Xbox One":
+        return xbox;
+        break;
+      case "PC":
+        return steam;
+        break;
+      case "Nintendo Switch":
+        return nintendo;
+        break;
+      case "iOS":
+        return apple;
+        break;
+      case "macOS":
+        return apple;
+        break;
+      default:
+        return gamepad;
+        break;
+    }
+  };
+
+  //Star Logic
+  const getStars = () => {
+    const stars = [];
+    const rating = Math.floor(game.rating);
+    for (let i = 1; i <= 5; i++) {
+      if (i <= rating) {
+        stars.push(<img alt="star" key={i} src={starFull}></img>);
+      } else {
+        stars.push(<img alt="star" key={i} src={starEmpty}></img>);
+      }
+    }
+    return stars;
+  };
+
   const { screenShot, game, isLoading } = useSelector((state) => state.detail);
   return (
     <>
       {!isLoading && (
         <CardShadow className="shadow" onClick={exitDetailHandler}>
-          <Detail>
+          <Detail layoutId={pathId}>
             <Stats>
               <div className="rating">
-                <h3>{game.name}</h3>
+                <motion.h3 layoutId={`title ${pathId}`}>{game.name}</motion.h3>
                 <p>Rating: {game.rating}</p>
+                {getStars()}
               </div>
               <Info>
                 <h3>Platforms</h3>
                 <Platforms>
                   {game.platforms.map((data) => (
-                    <h3 key={data.platform.id}>{data.platform.name}</h3>
+                    <img
+                      key={data.platform.id}
+                      src={getPlatform(data.platform.name)}
+                      alt={data.platform.name}
+                    ></img>
                   ))}
                 </Platforms>
               </Info>
             </Stats>
             <Media>
-              <img src={game.background_image} alt={game.background_image} />
+              <motion.img
+                layoutId={`image ${pathId}`}
+                src={smallImage(game.background_image, 1280)}
+                alt={game.background_image}
+              />
             </Media>
             <Description>
               <p>{game.description_raw}</p>
             </Description>
-            <div className="gallery">
+            <Gallery>
               {screenShot.results.map((ss) => (
-                <img src={ss.image} key={ss.id} alt={ss.image} />
+                <img
+                  src={smallImage(ss.image, 1280)}
+                  key={ss.id}
+                  alt={ss.image}
+                />
               ))}
-            </div>
+            </Gallery>
           </Detail>
         </CardShadow>
       )}
@@ -64,6 +133,7 @@ const CardShadow = styled(motion.div)`
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 10;
   align-items: center;
   align-content: center;
   &::-webkit-scrollbar {
@@ -95,6 +165,11 @@ const Stats = styled(motion.div)`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  img {
+    width: 2rem;
+    height: 2rem;
+    display: inline;
+  }
 `;
 
 const Info = styled(motion.div)`
@@ -118,4 +193,10 @@ const Media = styled(motion.div)`
 
 const Description = styled(motion.div)`
   margin: 5rem 0rem;
+`;
+
+const Gallery = styled(motion.div)`
+  img {
+    margin-top: 2rem;
+  }
 `;
